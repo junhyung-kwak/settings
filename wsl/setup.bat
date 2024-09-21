@@ -34,11 +34,7 @@ timeout /t 5 /nobreak >nul
 REM 사용자 계정 및 암호 생성
 echo Setting up user %WSL_USER%...
 
-wsl -d "Ubuntu-%UBUNTU_VERSION%" -- bash -c "
-adduser --disabled-password --gecos '' %WSL_USER%;
-echo '%WSL_USER%:%WSL_PASSWORD%' | chpasswd;
-usermod -aG sudo %WSL_USER%;
-"
+wsl -d "Ubuntu-%UBUNTU_VERSION%" -- bash -c " adduser --disabled-password --gecos '' %WSL_USER%; echo '%WSL_USER%:%WSL_PASSWORD%' | chpasswd; usermod -aG sudo %WSL_USER%; "
 
 :skip_install
 echo Ubuntu already installed or installation complete.
@@ -46,13 +42,7 @@ echo Ubuntu already installed or installation complete.
 REM SSH 설치 및 설정을 위한 명령을 Ubuntu 내에서 실행
 echo Setting up SSH in Ubuntu...
 
-wsl -u root -- bash -c "
-apt-get update && apt-get install -y openssh-server;
-service ssh start;
-sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config;
-sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config;
-service ssh restart;
-"
+wsl -u root -- bash -c " apt-get update && apt-get install -y openssh-server; service ssh start; sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config; sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config; service ssh restart; "
 
 echo Configuring Windows firewall and port forwarding...
 
