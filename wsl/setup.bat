@@ -39,11 +39,6 @@ wsl -d "Ubuntu-%UBUNTU_VERSION%" -- bash -c " adduser --disabled-password --geco
 :skip_install
 echo Ubuntu already installed or installation complete.
 
-REM SSH 설치 및 설정을 위한 명령을 Ubuntu 내에서 실행
-echo Setting up SSH in Ubuntu...
-
-wsl -u root -- bash -c " apt-get update && apt-get install -y openssh-server; service ssh start; sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config; sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config; service ssh restart; "
-
 echo Configuring Windows firewall and port forwarding...
 
 REM Windows 방화벽에서 포트 22를 열어줌
@@ -60,3 +55,10 @@ REM 포트포워딩 유지 설정 (재부팅 후에도 적용되도록 레지스
 reg add HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules /v "WSLSSHAllow" /t REG_SZ /d "v2.0|Action=Allow|Active=TRUE|Dir=In|Protocol=6|LPort=22|RA4=0|RA4Mask=0|LA4=127.0.0.1|LA4Mask=255.255.255.255|RA6=0|RA6Mask=0|LA6=::1|LA6Mask=ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff|" /f
 
 echo Setup complete. You can now connect using SSH on port 22 with user %WSL_USER%.
+
+REM SSH 설치 및 설정을 위한 명령을 Ubuntu 내에서 실행
+echo Setting up SSH in Ubuntu...
+
+wsl -u root -- bash -c " apt-get update && apt-get install -y openssh-server; service ssh start; sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config; sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config; service ssh restart; "
+
+
