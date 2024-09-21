@@ -59,4 +59,6 @@ echo Setup complete. You can now connect using SSH on port 22 with user %WSL_USE
 REM Execute commands to install and configure SSH in Ubuntu
 echo Setting up SSH in Ubuntu...
 
-wsl -u root -- bash -c " apt-get update && apt-get install -y openssh-server; service ssh start; sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config; sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config; service ssh restart; "
+wsl -u root -- bash -c " apt-get update && apt-get install -y openssh-server; service ssh start; sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config; sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config; "
+
+wsl -u root -- bash -c " service ssh restart; "
