@@ -44,8 +44,11 @@ echo Configuring Windows firewall and port forwarding...
 REM Open port 22 in Windows firewall
 netsh advfirewall firewall add rule name="WSL SSH" dir=in action=allow protocol=TCP localport=22
 
-REM Set up port forwarding (Windows 22 -> WSL 22)
-netsh interface portproxy add v4tov4 listenport=22 listenaddress=0.0.0.0 connectport=22 connectaddress=127.0.0.1
+REM Get WSL IP address
+for /f "tokens=*" %%i in ('wsl -d "Ubuntu-%UBUNTU_VERSION%" -- hostname -I') do set WSL_IP=%%i
+
+REM Set up port forwarding (Windows 22 -> WSL IP 22)
+netsh interface portproxy add v4tov4 listenport=22 listenaddress=0.0.0.0 connectport=22 connectaddress=%WSL_IP%
 
 REM Configure SSH server to start automatically on WSL reboot
 echo Creating task to start SSH server on reboot...
